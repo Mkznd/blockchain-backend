@@ -1,4 +1,4 @@
-from models.user.UserBase import UserBase
+from models.user.user_base import UserBase
 
 
 class UserCreate(UserBase):

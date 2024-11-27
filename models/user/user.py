@@ -1,6 +1,6 @@
 from sqlmodel import Field
 
-from models.user.UserBase import UserBase
+from models.user.user_base import UserBase
 
 
 class User(UserBase, table=True):

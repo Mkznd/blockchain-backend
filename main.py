@@ -4,9 +4,9 @@ from sqlite3 import IntegrityError
 from fastapi import FastAPI, HTTPException
 
 from db.config import create_db_and_tables, SessionDep
-from models.user.User import User
-from models.user.UserCreate import UserCreate
-from models.user.UserPublic import UserPublic
+from models.user.user import User
+from models.user.user_create import UserCreate
+from models.user.user_public import UserPublic
 
 
 @asynccontextmanager
