@@ -20,17 +20,9 @@ app = FastAPI(lifespan=lifespan)
 
 @app.get("/")
 async def get_all_users(session: SessionDep):
-    return session.query(User).all()
+    return await User.get_all(session)
 
 
 @app.post("/user/", response_model=UserPublic)
 async def create_user(user_create: UserCreate, session: SessionDep):
-    db_user = User.model_validate(user_create)
-    session.add(db_user)
-    try:
-        session.commit()
-    except:
-        session.rollback()
-        raise HTTPException(status_code=400, detail="Username already exists")
-    session.refresh(db_user)
-    return db_user
+    return await User.create(user_create, session)
