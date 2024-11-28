@@ -8,4 +8,3 @@ class ProjectPublic(ProjectBase):
     id: int
     status: ProjectStatus
     owner_id: int
-    backers: list[int]
