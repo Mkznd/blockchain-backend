@@ -1,7 +1,11 @@
+import os
 from contextlib import asynccontextmanager
-from sqlite3 import IntegrityError
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 from db.config import create_db_and_tables, SessionDep
 from models.user.user import User
