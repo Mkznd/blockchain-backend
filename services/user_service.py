@@ -1,10 +1,11 @@
+import logging
+
 from fastapi import HTTPException, status
 from sqlmodel import Session, select
 from passlib.hash import bcrypt
 
 from models.user.user import User
 from models.user.user_create import UserCreate
-from models.user.user_login import UserLogin
 
 USER_NOT_FOUND = "User not found"
 
@@ -26,6 +27,7 @@ class UserService:
             session.commit()
         except Exception as e:
             session.rollback()
+            logging.error(f"User creation failed: {str(e)}")
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=f"User creation failed: {str(e)}",
@@ -38,6 +40,7 @@ class UserService:
         try:
             return session.exec(select(User)).all()
         except Exception as e:
+            logging.error(f"Could not retrieve users: {str(e)}")
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail=f"Could not retrieve users: {str(e)}",
@@ -47,6 +50,7 @@ class UserService:
     async def get_by_id(user_id: int, session: Session):
         user = session.get(User, user_id)
         if not user:
+            logging.error(f"User with id {user_id} not found")
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND, detail=USER_NOT_FOUND
             )
@@ -56,6 +60,7 @@ class UserService:
     async def update(user_id: int, user_data: UserCreate, session: Session):
         user = session.get(User, user_id)
         if not user:
+            logging.error(f"User with id {user_id} not found")
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND, detail=USER_NOT_FOUND
             )
@@ -71,6 +76,7 @@ class UserService:
             session.refresh(user)
         except Exception as e:
             session.rollback()
+            logging.error(f"Update failed: {str(e)}")
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=f"Update failed: {str(e)}",
@@ -81,6 +87,7 @@ class UserService:
     async def delete(user_id: int, session: Session):
         user = session.get(User, user_id)
         if not user:
+            logging.error(f"User with id {user_id} not found")
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND, detail=USER_NOT_FOUND
             )
@@ -89,6 +96,7 @@ class UserService:
             session.commit()
         except Exception as e:
             session.rollback()
+            logging.error(f"Delete failed: {str(e)}")
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=f"Delete failed: {str(e)}",
