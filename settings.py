@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     db_name: str = os.environ.get("DB_NAME")
     db_username: str = os.environ.get("DB_USER")
     db_password: str = os.environ.get("DB_PASS")
-    sqlite_file_name: str = os.environ.get("SQLITE_FILE_NAME")
+    sqlite_file_name: str | None = os.environ.get("SQLITE_FILE_NAME")
     database_url: str = ""
 
     if run_mode == "dev":
