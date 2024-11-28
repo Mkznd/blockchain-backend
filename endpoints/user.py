@@ -2,6 +2,7 @@ import logging
 
 from fastapi import APIRouter, Depends, HTTPException
 from db.config import SessionDep
+from models.project.project_public import ProjectPublic
 from models.user.user_create import UserCreate
 from models.user.user_public import UserPublic
 from services.user_service import UserService
@@ -9,7 +10,7 @@ from services.user_service import UserService
 router = APIRouter(prefix="/user", tags=["User"])
 
 
-@router.get("/", response_model=UserPublic)
+@router.get("/", response_model=list[UserPublic])
 async def get_all_users(session: SessionDep):
     logging.info("Getting all users")
     return await UserService.get_all(session)
@@ -37,3 +38,9 @@ async def update_user(user_id: int, user_create: UserCreate, session: SessionDep
 async def delete_user(user_id: int, session: SessionDep):
     logging.info(f"Deleting user with id {user_id}")
     return await UserService.delete(user_id, session)
+
+
+@router.get("/{user_id}/projects", response_model=list[ProjectPublic])
+async def get_user_projects(user_id: int, session: SessionDep):
+    logging.info(f"Getting projects for user with id {user_id}")
+    return await UserService.get_projects(user_id, session)

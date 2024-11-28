@@ -38,7 +38,8 @@ class UserService:
     @staticmethod
     async def get_all(session: Session):
         try:
-            return session.exec(select(User)).all()
+            users = session.exec(select(User)).all()
+            return users
         except Exception as e:
             logging.error(f"Could not retrieve users: {str(e)}")
             raise HTTPException(
@@ -102,3 +103,13 @@ class UserService:
                 detail=f"Delete failed: {str(e)}",
             )
         return user
+
+    @staticmethod
+    async def get_projects(user_id: int, session: Session):
+        user = session.exec(select(User).where(User.id == user_id)).first()
+        if not user:
+            logging.error(f"User with id {user_id} not found")
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail=USER_NOT_FOUND
+            )
+        return user.projects

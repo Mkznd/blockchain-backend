@@ -13,6 +13,7 @@ load_dotenv()
 from db.config import create_db_and_tables
 from endpoints.user import router as user_router
 from endpoints.auth import router as auth_router
+from endpoints.project import router as project_router
 
 setup_logging()
 
@@ -27,3 +28,4 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 app.include_router(user_router)
 app.include_router(auth_router)
+app.include_router(project_router)
