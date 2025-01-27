@@ -5,6 +5,7 @@ from passlib.handlers.bcrypt import bcrypt
 from sqlmodel import Session, select
 from starlette import status
 
+from db.config import SessionDep
 from models.user.user import User
 from models.user.user_create import UserCreate
 from models.user.user_login import UserLogin

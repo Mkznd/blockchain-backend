@@ -12,6 +12,7 @@ if TYPE_CHECKING:
 class User(UserBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
     password: str
+    is_approved: bool = Field(default=False)
 
     projects: list["Project"] = Relationship(
         back_populates="owner", cascade_delete=True
