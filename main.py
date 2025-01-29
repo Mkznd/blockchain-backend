@@ -14,7 +14,6 @@ import blockchain_config
 from db.config import create_db_and_tables
 from endpoints.user import router as user_router
 from endpoints.auth import router as auth_router
-from endpoints.project import router as project_router
 
 setup_logging()
 
@@ -39,4 +38,3 @@ app.add_middleware(
 
 app.include_router(user_router)
 app.include_router(auth_router)
-app.include_router(project_router)
