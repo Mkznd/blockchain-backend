@@ -6,6 +6,7 @@ from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
 from logging_config import setup_logging
+from settings import settings
 
 load_dotenv()
 
@@ -27,7 +28,7 @@ app = FastAPI(lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[settings.origins_allowed.split(",")],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

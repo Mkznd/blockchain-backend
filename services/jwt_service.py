@@ -1,8 +1,7 @@
-import os
-import jwt
-import logging
 import datetime
-from typing import Any, Union
+from typing import Union
+
+import jwt
 from fastapi import HTTPException, status
 
 from settings import settings

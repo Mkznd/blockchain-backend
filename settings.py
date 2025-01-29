@@ -25,5 +25,7 @@ class Settings(BaseSettings):
     jwt_secret: str = os.environ.get("JWT_SECRET")
     jwt_algorithm: str = os.environ.get("JWT_ALGORITHM")
 
+    origins_allowed: str = os.environ.get("ORIGINS_ALLOWED")
+
 
 settings = Settings()

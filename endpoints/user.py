@@ -1,6 +1,7 @@
 import logging
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter
+
 from db.config import SessionDep
 from models.user.user_create import UserCreate
 from models.user.user_public import UserPublic

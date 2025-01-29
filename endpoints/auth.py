@@ -1,20 +1,15 @@
-import logging
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, status, Request
-from sqlmodel import Session
-from passlib.hash import bcrypt
+from fastapi import APIRouter, Depends, HTTPException
 
 from db.config import SessionDep
 from models.user.user import User
 from models.user.user_create import UserCreate
 from models.user.user_login import UserLogin
-from sqlmodel import select
-
 from models.user.user_public import UserPublic
-from services.auth_service import AuthService
-from services.jwt_service import create_access_token, decode_access_token
 from security.jwt_check import check_jwt
+from services.auth_service import AuthService
+from services.jwt_service import create_access_token
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 

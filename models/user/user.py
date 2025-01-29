@@ -1,4 +1,4 @@
-from sqlmodel import Field, Relationship
+from sqlmodel import Field
 
 from models.user.user_base import UserBase
 
