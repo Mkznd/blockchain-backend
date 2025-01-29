@@ -1,4 +1,4 @@
-name: Run FastAPI Tests
+name: Run FastAPI Tests (PostgreSQL)
 
 on:
   push:
@@ -25,6 +25,7 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -41,16 +42,29 @@ jobs:
           pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Set Environment Variables
+      - name: Set Test Database Environment Variables
         run: |
-          echo "RUN_MODE=${{ secrets.RUN_MODE }}" >> $GITHUB_ENV
-          echo "DB_HOST=${{ secrets.DB_HOST }}" >> $GITHUB_ENV
-          echo "DB_PORT=${{ secrets.DB_PORT }}" >> $GITHUB_ENV
-          echo "DB_NAME=${{ secrets.DB_NAME }}" >> $GITHUB_ENV
-          echo "DB_USER=${{ secrets.DB_USER }}" >> $GITHUB_ENV
-          echo "DB_PASS=${{ secrets.DB_PASS }}" >> $GITHUB_ENV
-          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> $GITHUB_ENV
-          echo "JWT_ALGORITHM=${{ secrets.JWT_ALGORITHM }}" >> $GITHUB_ENV
+          echo "RUN_MODE=test" >> $GITHUB_ENV
+          echo "DB_HOST=localhost" >> $GITHUB_ENV
+          echo "DB_PORT=5432" >> $GITHUB_ENV
+          echo "DB_NAME=testdb" >> $GITHUB_ENV
+          echo "DB_USER=testuser" >> $GITHUB_ENV
+          echo "DB_PASS=testpass" >> $GITHUB_ENV
+          echo "JWT_SECRET=testsecret" >> $GITHUB_ENV
+          echo "JWT_ALGORITHM=HS256" >> $GITHUB_ENV
+
+      - name: Wait for PostgreSQL to be Ready
+        run: |
+          for i in {1..10}; do
+            pg_isready -h localhost -p 5432 -U testuser && break
+            echo "Waiting for PostgreSQL..."
+            sleep 3
+          done
+
+      - name: Initialize Database Schema
+        run: |
+          source venv/bin/activate
+          python -c "from main import create_db_and_tables; create_db_and_tables()"
 
       - name: Run FastAPI Tests
         run: |
