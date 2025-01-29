@@ -1,16 +1,14 @@
 import logging
-import os
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
 from dotenv import load_dotenv
+from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
 from logging_config import setup_logging
 
 load_dotenv()
 
-import blockchain_config
 from db.config import create_db_and_tables
 from endpoints.user import router as user_router
 from endpoints.auth import router as auth_router

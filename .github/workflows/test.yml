@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - develop
   pull_request:
     branches:
       - master
@@ -44,9 +43,18 @@ jobs:
           pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Set Environment Variables
+        run: |
+          echo "RUN_MODE=${{ secrets.RUN_MODE }}" >> $GITHUB_ENV
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> $GITHUB_ENV
+          echo "DB_PORT=${{ secrets.DB_PORT }}" >> $GITHUB_ENV
+          echo "DB_NAME=${{ secrets.DB_NAME }}" >> $GITHUB_ENV
+          echo "DB_USER=${{ secrets.DB_USER }}" >> $GITHUB_ENV
+          echo "DB_PASS=${{ secrets.DB_PASS }}" >> $GITHUB_ENV
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> $GITHUB_ENV
+          echo "JWT_ALGORITHM=${{ secrets.JWT_ALGORITHM }}" >> $GITHUB_ENV
+
       - name: Run FastAPI Tests
-        env:
-          DATABASE_URL: "postgresql://testuser:testpass@localhost:5432/testdb"
         run: |
           source venv/bin/activate
           pytest test/

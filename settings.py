@@ -11,12 +11,6 @@ class Settings(BaseSettings):
     db_username: str = os.environ.get("DB_USER")
     db_password: str = os.environ.get("DB_PASS")
 
-    blockchain_url: str = os.environ.get("BLOCKCHAIN_URL")
-    blockchain_port: str = os.environ.get("BLOCKCHAIN_PORT")
-    abi_port: str = os.environ.get("ABI_PORT")
-    contract_address: str = os.environ.get("CONTRACT_ADDRESS")
-    private_key: str = os.environ.get("PRIVATE_KEY")
-
     sqlite_file_name: str | None = os.environ.get("SQLITE_FILE_NAME")
     database_url: str = ""
 
