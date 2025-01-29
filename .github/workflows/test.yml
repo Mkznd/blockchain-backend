@@ -52,6 +52,7 @@ jobs:
           echo "DB_PASS=testpass" >> $GITHUB_ENV
           echo "JWT_SECRET=testsecret" >> $GITHUB_ENV
           echo "JWT_ALGORITHM=HS256" >> $GITHUB_ENV
+          echo "ORIGINS_ALLOWED=http://localhost:3000" >> $GITHUB_ENV
 
       - name: Wait for PostgreSQL to be Ready
         run: |
