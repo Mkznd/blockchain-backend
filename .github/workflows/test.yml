@@ -38,13 +38,10 @@ jobs:
           echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> $GITHUB_ENV
           echo "JWT_ALGORITHM=${{ secrets.JWT_ALGORITHM }}" >> $GITHUB_ENV
 
-      - name: Initialize SQLite Database (Create Tables)
+      - name: Ensure SQLite Database and Tables Exist
         run: |
           source venv/bin/activate
-          python -c "from sqlmodel import SQLModel, create_engine; \
-            from models.user.user import User; \
-            engine = create_engine('sqlite:///test_database.db'); \
-            SQLModel.metadata.create_all(engine)"
+          pytest --setup-show test/conftest.py  # Ensure setup runs before tests
 
       - name: Run FastAPI Tests
         run: |
